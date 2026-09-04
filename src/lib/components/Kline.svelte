@@ -389,7 +389,7 @@
         }
     }
 </script>
-<div class="kline flex-1 h-full w-full max-h-[80vh] min-h-[80vh] border rounded-lg overflow-hidden relative">
+<div class="kline flex-1 h-full w-full max-h-[80vh] md:max-h-full min-h-[60vh] md:min-h-auto border rounded-lg overflow-hidden relative">
     <div bind:this={chart_container} class="h-full w-full chart relative">
         {#if chart_container && kline_data}
             <Chart
