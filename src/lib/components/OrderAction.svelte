@@ -102,8 +102,6 @@
     let short_size_placeholder = $derived(max_can_open_short_size.mul(short_slider_rate_decimal));
     // 最终开空数量
     let final_short_size = $derived(new Decimal(short_size ?? short_size_placeholder));
-    // 手动输入的做空数量
-    let open_short_size = $derived(quote_balance_max.div(final_short_price));
     // 做空强平价格
     let short_liq_price = $state(d_0);
     // 做空总成本
@@ -155,26 +153,34 @@
                 client.subscribe(new BalancePositionHandler());
             });
 
-        get_symbol_config().then(data => {
-            if (!data) return;
-            const config = data.find((d: any) => d.symbol === market?.symbol);
-            leverage = new Decimal(String(config.leverage));
-        });
+        refresh_symbol_config();
     });
 
     $effect(() => {
+        settings.api_key;
+        settings.api_secret;
         market; // market更新后刷新资产
         refresh_balance();
+        refresh_symbol_config();
         reset();
     })
 
     function refresh_balance() {
         get_balance_v3().then((value) => {
             if (!value) return;
+            console.log(value)
             const balance = (value as Balance[])
                 .filter((item) => item.asset === market?.quote)
                 .at(0);
             quote_balance = new Decimal(balance?.availableBalance ?? "0");
+        });
+    }
+
+    function refresh_symbol_config() {
+        get_symbol_config().then(data => {
+            if (!data) return;
+            const config = data.find((d: any) => d.symbol === market?.symbol);
+            leverage = new Decimal(String(config.leverage));
         });
     }
 
@@ -361,7 +367,7 @@
             </div>
             <div class="flex justify-between text-[10px] px-1">
                 <span class="text-mist-500">可开</span>
-                <span>{market?.parse_base(open_short_size)}&nbsp;{market?.base}</span>
+                <span>{market?.parse_base(max_can_open_short_size)}&nbsp;{market?.base}</span>
             </div>
             <div class="flex justify-between text-[10px] px-1">
                 <span class="text-mist-500">可平</span>
