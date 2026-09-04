@@ -105,7 +105,7 @@
     });
 </script>
 
-<div class="flex flex-col h-full min-h-0 gap-2 justify-between">
+<div class="flex flex-col h-full max-h-79 md:max-h-full min-h-0 gap-2 justify-between">
     <div bind:this={aske} class="flex-1 flex flex-col min-h-0 overflow-hidden pt-1">
         {#each asks as ask}
             <div class="flex justify-between text-sm leading-6 px-3 border border-transparent hover:border-[#26a69a]/50 hover:cursor-pointer">

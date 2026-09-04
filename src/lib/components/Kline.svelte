@@ -145,6 +145,8 @@
     let candlestick_info_top = $state(0);
     let previous_price: Decimal = $state(new Decimal("0"));
     let show_loading_kline = $state(false);
+    let chart_container_width = $state<number>();
+    let chart_container_height = $state<number>();
 
     class KlineHandler implements WebsocketHandler {
         supported(_: string, message: WebSocketMessage): boolean {
@@ -225,8 +227,9 @@
             requestAnimationFrame(update_width);
             resizeObserver = new ResizeObserver(() => {
                 if (chart_ref && chart_container) {
-                    const { width, height } =
-                        chart_container.getBoundingClientRect();
+                    const { width, height } = chart_container.getBoundingClientRect();
+                    chart_container_width = width;
+                    chart_container_height = height;
                     chart_ref.getChart()?.applyOptions({ width, height });
                     requestAnimationFrame(update_width);
                 }
@@ -386,14 +389,14 @@
         }
     }
 </script>
-<div class="flex-1 h-full w-full border rounded-lg overflow-hidden relative">
+<div class="kline flex-1 h-full w-full max-h-[80vh] border rounded-lg overflow-hidden relative">
     <div bind:this={chart_container} class="h-full w-full chart relative">
         {#if chart_container && kline_data}
             <Chart
                 bind:this={chart_ref}
                 options={chart_options}
-                height={window.screen.availHeight}
-                width={window.screen.availWidth}
+                height={chart_container_height ?? window.screen.availHeight}
+                width={chart_container_width ?? window.screen.availWidth}
             >
                 <CandlestickSeries
                     bind:this={kline_ref}
@@ -417,7 +420,7 @@
             <div class="absolute top-2 left-3 flex flex-col z-30 gap-2">
                 <div class="flex gap-2.5 items-center">
                     <WebsocketStatus status={market_stream?.getStatus() ?? "idle"}></WebsocketStatus>
-                    <Button disabled title="显示/隐藏成交量" onclick={() => show_vol.current = !show_vol.current} variant=outline size=icon-sm>
+                    <Button class="hidden md:flex" disabled title="显示/隐藏成交量" onclick={() => show_vol.current = !show_vol.current} variant=outline size=icon-sm>
                         {#if show_vol.current}
                             <Eye/>
                         {:else}
@@ -501,5 +504,11 @@
 <style>
     .chart {
         cursor: crosshair;
+    }
+
+    @media (width < 48rem /* 768px */) {
+        .kline {
+            height: 100px;
+        }
     }
 </style>

@@ -147,10 +147,10 @@
 </svelte:head>
 <ForceField refraction={30} rippleIntensity={0.05} rippleSpeed={2} class="h-full w-full">
     <Blaze smoke={0.2} class="h-full w-full">
-        <div class="h-full w-full flex flex-col gap-3 p-5 overflow-hidden">
-            <div class={`flex-none flex gap-3 ${settings.is_invalid() ? "h-full" : "h-[80%]"}`}>
-                <Kline bind:market bind:current_price bind:kline_up_down_status bind:kline_series ></Kline>
-                <div class="flex-none flex flex-col h-full border rounded-lg w-110">
+        <div class="h-full w-full flex flex-col gap-3 p-5 overflow-y-auto overflow-x-hidden md:overflow-hidden">
+            <div class={`flex-none flex flex-col md:flex-row w-full gap-3 ${settings.is_invalid() ? "h-full" : "md:h-[80%]"}`}>
+                <Kline bind:market bind:current_price bind:kline_up_down_status bind:kline_series></Kline>
+                <div class="flex-none flex flex-col md:h-full border rounded-lg md:w-110 w-full">
                     <OrderBook {market} {current_price} bind:mark_price {kline_up_down_status}></OrderBook>
                     <Separator></Separator>
                     <div class="flex-none h-82">
@@ -159,9 +159,9 @@
                 </div>
             </div>
             {#if !settings.is_invalid()}
-                <div class="flex-1 border rounded-lg h-full flex">
-                    <div class="flex-1">
-                        <Table.Root class="text-xs border-b">
+                <div class="flex-none border rounded-lg w-full flex md:flex-row flex-col">
+                    <div class="flex-1 border-b-1 md:border-b-0">
+                        <Table.Root class="text-xs">
                             <Table.Header>
                                 <Table.Row>
                                     <Table.Head>合约</Table.Head>
@@ -208,8 +208,8 @@
                             </Table.Body>
                         </Table.Root>
                     </div>
-                    <Separator orientation="vertical"></Separator>
-                    <div class="flex-none min-w-110 w-[40%] overflow-x-auto">
+                    <!-- <Separator orientation="vertical"></Separator> -->
+                    <div class="flex-none border-l-none md:border-l min-h-20 md:min-w-110 md:w-[40%] overflow-x-auto">
                         <Table.Root class="text-xs border-b">
                             <Table.Header>
                                 <Table.Row>

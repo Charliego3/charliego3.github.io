@@ -111,8 +111,10 @@
     let settings_props = $state(settings.current());
     let reset_after_order = local_state("reset_after_order", false);
     let offset_input_width = $derived.by(() => {
-        if (!offset.current) return 47;
-        return (new Decimal(offset.current).toFixed().length * 8) + 47;
+        let def = 0;
+        if (typeof window !== "undefined" && window.screen.availWidth <= 767) def = 5;
+        if (!offset.current) return def + 47;
+        return (new Decimal(offset.current).toFixed().length * 8) + def + 47;
     });
 
     function reset() {
@@ -300,8 +302,8 @@
             </ButtonGroup.Root>
         </div>
     </div>
-    <div class="flex gap-2">
-        <div class="flex flex-col gap-2">
+    <div class="flex w-full gap-2">
+        <div class="flex w-full flex-col gap-2">
             <OrderInput title="Price" unit={market?.quote} bind:value={long_price} placeholder={market?.parse_quote(long_price_placeholder)} />
             <OrderInput title="Size" unit={market?.base} bind:value={long_size} placeholder={market?.parse_base(long_size_placeholder)} />
             <div class="flex gap-2 px-1">
@@ -338,7 +340,7 @@
                 <span>{market?.parse_base(can_close_long_size)}&nbsp;{market?.base}</span>
             </div>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex w-full flex-col gap-2">
             <OrderInput title="Price" unit={market?.quote} bind:value={short_price} placeholder={market?.parse_quote(short_price_placeholder)} />
             <OrderInput title="Size" unit={market?.base} bind:value={short_size} placeholder={market?.parse_base(short_size_placeholder)} />
             <div class="flex gap-2 px-1">
