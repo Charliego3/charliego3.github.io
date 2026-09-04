@@ -377,7 +377,7 @@
 
             <div class="space-y-1 max-w-sm flex flex-col items-center">
                 <h3 class="text-sm font-bold dark:text-amber-300 text-foreground/80">
-                    设置币安API
+                    配置API
                 </h3>
                 <p class="text-xs leading-relaxed dark:text-amber-500 text-foreground/60">
                     请设置币安API KEY以使用完整功能
