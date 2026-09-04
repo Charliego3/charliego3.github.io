@@ -410,7 +410,7 @@
                 ></CandlestickSeries>
             </Chart>
             {#if price_scale_width}
-                <button onclick={reset_price_scale} style={`width: ${price_scale_width + 1}px; height: ${(time_scale_height ?? 17.5) + (show_vol ? 1 : 2)}px`} class="absolute bottom-0 hover:cursor-pointer right-0 border-l border-t flex items-center justify-center">
+                <button onclick={reset_price_scale} style={`width: ${price_scale_width + 1}px; height: ${(time_scale_height ?? 17.5) + (show_vol ? 0.5 : 2)}px`} class="absolute bottom-0 hover:cursor-pointer right-0 border-l border-t flex items-center justify-center">
                     <FoldVertical size={15}/>
                 </button>
             {/if}
