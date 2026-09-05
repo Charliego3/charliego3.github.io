@@ -236,7 +236,7 @@
             });
             resizeObserver.observe(chart_container as Element);
             if (chart_api) {
-                kline_series?.priceScale().applyOptions({ ticksVisible: true, scaleMargins: { top: 0.1, bottom: 0.02 } });
+                kline_series?.priceScale().applyOptions({ ticksVisible: true, scaleMargins: { top: 0.15, bottom: 0.02 } });
                 chart_handler = chart_api.subscribeCrosshairMove(
                     (param: MouseEventParams<Time>) => {untrack(() => {
                         // 鼠标在图表外
@@ -389,7 +389,7 @@
         }
     }
 </script>
-<div class="kline flex-1 h-full w-full max-h-[80vh] md:max-h-full min-h-[60vh] md:min-h-auto border rounded-lg overflow-hidden relative">
+<div class="kline flex-1 h-full w-full max-h-[80vh] md:max-h-full min-h-[60vh] md:min-h-auto border-b md:border-b-none md:border md:rounded-lg overflow-hidden relative">
     <div bind:this={chart_container} class="h-full w-full chart relative">
         {#if chart_container && kline_data}
             <Chart

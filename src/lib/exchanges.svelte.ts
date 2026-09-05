@@ -27,23 +27,23 @@ export class Market {
     ) { }
 
     parse_quote(value: any) {
-        return new Decimal(value).toFixed(this.price_precision);
+        return new Decimal(value).toFixed(this.price_precision, Decimal.ROUND_DOWN);
     }
 
     parse_base(value: any) {
-        return new Decimal(value).toFixed(this.quantity_precision);
+        return new Decimal(value).toFixed(this.quantity_precision, Decimal.ROUND_DOWN);
     }
 
     parse_numbers(value: any) {
-        return new Decimal(value).toFixed(this.price_precision + this.quantity_precision);
+        return new Decimal(value).toFixed(this.price_precision + this.quantity_precision, Decimal.ROUND_DOWN);
     }
 
     parse_quote_0(value: any) {
-        return new Decimal(value).toDecimalPlaces(this.price_precision).toFixed();
+        return new Decimal(value).toDecimalPlaces(this.price_precision, Decimal.ROUND_DOWN).toFixed();
     }
 
     parse_base_0(value: any) {
-        return new Decimal(value).toDecimalPlaces(this.quantity_precision).toFixed();
+        return new Decimal(value).toDecimalPlaces(this.quantity_precision, Decimal.ROUND_DOWN).toFixed();
     }
 }
 

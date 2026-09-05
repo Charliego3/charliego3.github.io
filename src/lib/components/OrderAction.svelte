@@ -23,9 +23,10 @@
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
     import { MorphIcon } from "morphicons/svelte";
-    import { MopSparkles, Mop } from "lucide";
+    import { MopSparkles, Mop, Eye, EyeOff } from "lucide";
 
     interface Props {
+        order_book_hiddened: boolean;
         market: Market | undefined;
         current_price: Decimal;
         on_order?: (order: Order) => void;
@@ -36,6 +37,7 @@
     }
 
     let {
+        order_book_hiddened = $bindable(),
         market = $bindable(),
         current_price,
         on_order,
@@ -170,7 +172,6 @@
     function refresh_balance() {
         get_balance_v3().then((value) => {
             if (!value) return;
-            console.log(value)
             const balance = (value as Balance[])
                 .filter((item) => item.asset === market?.quote)
                 .at(0);
@@ -272,6 +273,9 @@
                 <Button class="h-7" onclick={reset} title="重置" variant="outline" size="icon-sm">
                     <RotateCcw />
                 </Button>
+                <Button class="h-7 md:hidden" onclick={() => order_book_hiddened = !order_book_hiddened} title="显示/隐藏盘口" variant="outline" size="icon-sm">
+                    <MorphIcon icon={order_book_hiddened ? EyeOff : Eye} />
+                </Button>
                 <Button class="h-7" onclick={() => reset_after_order.current = !reset_after_order.current} title="下单后自动重置" variant="outline" size="icon-sm">
                     <MorphIcon icon={reset_after_order.current ? MopSparkles : Mop} />
                 </Button>
@@ -316,7 +320,7 @@
                 <div class="flex gap-2 items-end">
                     <span>平空</span>
                     {#if can_close_short_size.comparedTo(d_0) > 0}
-                        <span class="text-[11px] text-background/70 flex gap-0.5">
+                        <span class="text-[10px] text-background/70 dark:text-foreground/70 flex gap-0.5">
                             <span>{market?.parse_base(can_close_short_size)}</span>
                             <span>{market?.base}</span>
                         </span>
@@ -352,7 +356,7 @@
                 <div class="flex gap-2 items-end">
                     <span>平多</span>
                     {#if can_close_long_size.comparedTo(d_0) > 0}
-                        <span class="text-[11px] text-background/70 flex gap-0.5">
+                        <span class="text-[10px] text-background/70 dark:text-foreground/70 flex gap-0.5">
                             <span>{market?.parse_base(can_close_long_size)}</span>
                             <span>{market?.base}</span>
                         </span>
