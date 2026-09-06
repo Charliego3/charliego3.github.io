@@ -36,8 +36,8 @@
                 {const is_long = p.positionSide === "LONG"}
                 <Table.Cell>{p.symbol}</Table.Cell>
                 <Table.Cell class={(is_long ? "text-[#ef5350]" : "text-[#26a69a]") + " font-bold hidden md:table-cell"}>{is_long ? "开多" : "开空"}</Table.Cell>
-                <Table.Cell class={(p.positionAmt > 0 ? "text-[#ef5350]" : "text-[#26a69a]") + " font-bold"}>{p.positionAmt}</Table.Cell>
-                <Table.Cell>{p.entryPrice}</Table.Cell>
+                <Table.Cell class={(p.positionAmt > 0 ? "text-[#ef5350]" : "text-[#26a69a]") + " font-bold"}>{market?.parse_base(p.positionAmt)}</Table.Cell>
+                <Table.Cell>{market?.parse_quote(p.entryPrice)}</Table.Cell>
                 <Table.Cell class="hidden md:table-cell">{market?.parse_quote(mark_price)}</Table.Cell>
                 {const diff = $derived(is_long ? current_price.sub(new Decimal(p.entryPrice)) : new Decimal(p.entryPrice).sub(current_price))}
                 <Table.Cell class={"hidden md:table-cell " + (diff.comparedTo(0) > 0 ? "text-[#ef5350]" : "text-[#26a69a]")}>{market?.parse_quote(diff)}</Table.Cell>

@@ -23,7 +23,7 @@
     import { Input } from "$lib/components/ui/input/index.js";
     import { Label } from "$lib/components/ui/label/index.js";
     import { MorphIcon } from "morphicons/svelte";
-    import { MopSparkles, Mop, Eye, EyeOff } from "lucide";
+    import { MopSparkles, Mop, Eye, EyeOff, Zap, ZapOff } from "lucide";
 
     interface Props {
         order_book_hiddened: boolean;
@@ -109,6 +109,7 @@
     // 做空总成本
     let short_cost = $derived(final_short_size.mul(final_short_price.div(leverage).add(short_unit_loss)));
 
+    let fast_order_opened = local_state("fast_order_opened", false);
     let settings_opened = $state(false);
     let settings_props = $state(settings.current());
     let reset_after_order = local_state("reset_after_order", false);
@@ -276,6 +277,9 @@
                 <Button class="h-7 md:hidden" onclick={() => order_book_hiddened = !order_book_hiddened} title="显示/隐藏盘口" variant="outline" size="icon-sm">
                     <MorphIcon icon={order_book_hiddened ? EyeOff : Eye} />
                 </Button>
+                <Button class="h-7 md:hidden" onclick={() => fast_order_opened.current = !fast_order_opened.current} title="显示/隐藏盘口" variant="outline" size="icon-sm">
+                    <MorphIcon icon={fast_order_opened.current ? ZapOff : Zap} />
+                </Button>
                 <Button class="h-7" onclick={() => reset_after_order.current = !reset_after_order.current} title="下单后自动重置" variant="outline" size="icon-sm">
                     <MorphIcon icon={reset_after_order.current ? MopSparkles : Mop} />
                 </Button>
@@ -314,8 +318,8 @@
                 <Slider type="single" bind:value={long_slider_rate} max={100} step={1} />
                 <span class="w-9 text-right text-xs text-mist-500">{long_slider_rate}%</span>
             </div>
-            <Button onclick={() => order_long()} variant="default" class="bg-[#ef5350] hover:cursor-pointer hover:bg-[#ef5350]/80 text-white" size="sm">做多</Button>
-            <Button onclick={order_close_short} disabled={can_close_short_size.comparedTo(d_0) <= 0} variant="default"
+            <Button disabled={fast_order_opened.current} onclick={() => order_long()} variant="default" class="bg-[#ef5350] hover:cursor-pointer hover:bg-[#ef5350]/80 text-white" size="sm">做多</Button>
+            <Button onclick={order_close_short} disabled={fast_order_opened.current || can_close_short_size.comparedTo(d_0) <= 0} variant="default"
                 class="bg-[#26a69a] hover:cursor-pointer hover:bg-[#26a69a]/80 text-white" size="sm">
                 <div class="flex gap-2 items-end">
                     <span>平空</span>
@@ -351,8 +355,8 @@
                 <Slider type="single" bind:value={short_slider_rate} max={100} step={1} />
                 <span class="w-9 text-right text-xs text-mist-500">{short_slider_rate}%</span>
             </div>
-            <Button onclick={() => order_short()} variant="default" class="bg-[#26a69a] hover:cursor-pointer hover:bg-[#26a69a]/80 text-white" size="sm">做空</Button>
-            <Button onclick={order_close_long} disabled={can_close_long_size.comparedTo(d_0) <= 0} variant="default" class="bg-[#ef5350] hover:cursor-pointer hover:bg-[#ef5350]/80 text-white" size="sm">
+            <Button disabled={fast_order_opened.current} onclick={() => order_short()} variant="default" class="bg-[#26a69a] hover:cursor-pointer hover:bg-[#26a69a]/80 text-white" size="sm">做空</Button>
+            <Button onclick={order_close_long} disabled={fast_order_opened.current || can_close_long_size.comparedTo(d_0) <= 0} variant="default" class="bg-[#ef5350] hover:cursor-pointer hover:bg-[#ef5350]/80 text-white" size="sm">
                 <div class="flex gap-2 items-end">
                     <span>平多</span>
                     {#if can_close_long_size.comparedTo(d_0) > 0}

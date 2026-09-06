@@ -304,15 +304,22 @@
             id: `subscribe_${market?.symbol_lower}_kline_${interval.current}`,
         };
 
+        let un_state_change_listener: () => void | undefined;
         untrack(() => {
             market_stream = websocketManager.market_stream();
             if (market_stream) {
+                un_state_change_listener = market_stream.onStateChange((state) => {
+                    if (state.status === "open") {
+                        refresh_kline();
+                    }
+                });
                 unsubscribe_kline_handler = market_stream.subscribe(new KlineHandler());
                 market_stream.send(kline_params);
             }
         });
 
         return () => {
+            un_state_change_listener?.();
             market_stream?.send_unsubscribe(kline_params);
             unsubscribe_kline_handler();
         }
