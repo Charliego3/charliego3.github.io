@@ -277,7 +277,7 @@
                 <Button class="h-7 md:hidden" onclick={() => order_book_hiddened = !order_book_hiddened} title="显示/隐藏盘口" variant="outline" size="icon-sm">
                     <MorphIcon icon={order_book_hiddened ? EyeOff : Eye} />
                 </Button>
-                <Button class="h-7 md:hidden" onclick={() => fast_order_opened.current = !fast_order_opened.current} title="显示/隐藏盘口" variant="outline" size="icon-sm">
+                <Button class="h-7" onclick={() => fast_order_opened.current = !fast_order_opened.current} title="显示/隐藏盘口" variant="outline" size="icon-sm">
                     <MorphIcon icon={fast_order_opened.current ? ZapOff : Zap} />
                 </Button>
                 <Button class="h-7" onclick={() => reset_after_order.current = !reset_after_order.current} title="下单后自动重置" variant="outline" size="icon-sm">
