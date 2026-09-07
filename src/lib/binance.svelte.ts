@@ -58,7 +58,7 @@ async function hmacSha256(message: string): Promise<string> {
 
     const key = await crypto.subtle.importKey(
         "raw",
-        enc.encode(settings.current().api_secret),
+        enc.encode(settings.api_secret),
         { name: "HMAC", hash: "SHA-256" },
         false,
         ["sign"],
@@ -77,7 +77,7 @@ async function hmacSha256(message: string): Promise<string> {
 }
 
 function get_url(endpoint: string) {
-    return settings.current().rest_domain + endpoint;
+    return settings.rest_domain + endpoint;
 }
 
 async function request({ method = "GET", endpoint, signatured = true, body = {} }: RequestParams) {
@@ -89,8 +89,8 @@ async function request({ method = "GET", endpoint, signatured = true, body = {} 
         if (settings.is_invalid()) {
             return undefined;
         }
-        request_init.headers = { "X-MBX-APIKEY": settings.current().api_key };
-        const url = new URL(endpoint, settings.current().rest_domain);
+        request_init.headers = { "X-MBX-APIKEY": settings.api_key };
+        const url = new URL(endpoint, settings.rest_domain);
         if (method === "POST") {
             for (const [key, value] of Object.entries(body)) {
                 url.searchParams.set(key, value);

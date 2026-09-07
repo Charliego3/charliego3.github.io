@@ -61,7 +61,7 @@ class ExchangeInfoStore {
 
         try {
 
-            const res = await (kit_fetch ?? fetch)(`${settings.current().rest_domain}/fapi/v1/exchangeInfo`);
+            const res = await (kit_fetch ?? fetch)(`${settings.rest_domain}/fapi/v1/exchangeInfo`);
             if (!res.ok) throw new Error(String(res.status));
             const json = await res.json();
 
