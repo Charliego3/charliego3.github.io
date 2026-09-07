@@ -477,7 +477,7 @@
                     </NativeSelect.Root>
                 </div>
                 {#if candlestick_data}
-                    <div class="pl-1 flex gap-2 text-xs items-center">
+                    <div class="pl-1 flex flex-col md:flex-row gap-2 text-xs items-start md:items-center">
                         <span style="color: slategray">{candlestick_data.time}</span>
                         <span>开: <span style="color: {candlestick_style}">{candlestick_data.open}</span></span>
                         <span>高: <span style="color: {candlestick_style}">{candlestick_data.high}</span></span>
