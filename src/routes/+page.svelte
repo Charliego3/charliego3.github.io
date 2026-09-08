@@ -10,7 +10,6 @@
     import Orders from "$lib/components/Orders.svelte";
     import Positions from "$lib/components/Positions.svelte";
     import Blaze from "$lib/components/ui/Blaze.svelte";
-    import Cloth from "$lib/components/ui/Cloth.svelte";
     import ForceField from "$lib/components/ui/ForceField.svelte";
     import { Separator } from "$lib/components/ui/separator/index.js";
     import { Market } from "$lib/exchanges.svelte";
@@ -159,17 +158,15 @@
                 </div>
             </div>
             {#if settings.api_key && settings.api_secret}
-                <Cloth light={0.1} class="flex-1 h-full">
-                    <div class="h-full border-t md:border md:rounded-lg w-full flex md:flex-row flex-col">
-                        <div class="flex-1 border-b md:border-b-0">
-                            <Positions {market} {mark_price} {current_price} {positions}></Positions>
-                        </div>
-                        <!-- <Separator orientation="vertical"></Separator> -->
-                        <div class="flex-none border-l-none md:border-l min-h-20 md:min-w-110 md:w-[40%] overflow-x-auto">
-                            <Orders {opened_orders} {do_cancel_order} {get_order_title}></Orders>
-                        </div>
+                <div class="flex-1 border-t md:border md:rounded-lg w-full flex md:flex-row flex-col">
+                    <div class="flex-1 border-b md:border-b-0">
+                        <Positions {market} {mark_price} {current_price} {positions}></Positions>
                     </div>
-                </Cloth>
+                    <!-- <Separator orientation="vertical"></Separator> -->
+                    <div class="flex-none border-l-none md:border-l min-h-20 md:min-w-110 md:w-[40%] overflow-x-auto">
+                        <Orders {opened_orders} {do_cancel_order} {get_order_title}></Orders>
+                    </div>
+                </div>
             {/if}
         </div>
     </Blaze>
