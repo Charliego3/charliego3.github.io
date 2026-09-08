@@ -10,6 +10,7 @@
     import Orders from "$lib/components/Orders.svelte";
     import Positions from "$lib/components/Positions.svelte";
     import Blaze from "$lib/components/ui/Blaze.svelte";
+    import Cloth from "$lib/components/ui/Cloth.svelte";
     import ForceField from "$lib/components/ui/ForceField.svelte";
     import { Separator } from "$lib/components/ui/separator/index.js";
     import { Market } from "$lib/exchanges.svelte";
@@ -142,8 +143,8 @@
 <svelte:head>
     <title>{current_price + " |"} {market?.symbol}</title>
 </svelte:head>
-<ForceField refraction={30} rippleIntensity={0.05} rippleSpeed={2} class="md:h-full md:w-full">
-    <Blaze smoke={0.2} class="h-full w-full">
+<!-- <ForceField refraction={30} rippleIntensity={0.05} rippleSpeed={2} class="md:h-full md:w-full"> -->
+    <Blaze smoke={0.1} class="h-full w-full">
         <div class="h-full w-full flex flex-col md:gap-3 md:p-5 overflow-y-auto overflow-x-hidden md:overflow-hidden">
             <div class={`flex-none flex flex-col md:flex-row w-full md:gap-3 ${settings.is_invalid() ? "h-full" : "md:h-[80%]"}`}>
                 <Kline bind:market bind:current_price bind:kline_up_down_status bind:kline_series></Kline>
@@ -158,16 +159,18 @@
                 </div>
             </div>
             {#if settings.api_key && settings.api_secret}
-                <div class="flex-1 border-t md:border md:rounded-lg w-full flex md:flex-row flex-col">
-                    <div class="flex-1 border-b md:border-b-0">
-                        <Positions {market} {mark_price} {current_price} {positions}></Positions>
+                <Cloth light={0.1} class="flex-1 h-full">
+                    <div class="h-full border-t md:border md:rounded-lg w-full flex md:flex-row flex-col">
+                        <div class="flex-1 border-b md:border-b-0">
+                            <Positions {market} {mark_price} {current_price} {positions}></Positions>
+                        </div>
+                        <!-- <Separator orientation="vertical"></Separator> -->
+                        <div class="flex-none border-l-none md:border-l min-h-20 md:min-w-110 md:w-[40%] overflow-x-auto">
+                            <Orders {opened_orders} {do_cancel_order} {get_order_title}></Orders>
+                        </div>
                     </div>
-                    <!-- <Separator orientation="vertical"></Separator> -->
-                    <div class="flex-none border-l-none md:border-l min-h-20 md:min-w-110 md:w-[40%] overflow-x-auto">
-                        <Orders {opened_orders} {do_cancel_order} {get_order_title}></Orders>
-                    </div>
-                </div>
+                </Cloth>
             {/if}
         </div>
     </Blaze>
-</ForceField>
+<!-- </ForceField> -->
