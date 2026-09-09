@@ -143,7 +143,7 @@
     <title>{market?.parse_quote(current_price) + " |"} {market?.symbol}</title>
 </svelte:head>
 <!-- <ForceField refraction={30} rippleIntensity={0.05} rippleSpeed={2} class="md:h-full md:w-full"> -->
-    <Blaze smoke={0.1} class="h-full w-full">
+    <Blaze smoke={0.1} class="md:h-full md:w-full">
         <div class="h-full w-full flex flex-col md:gap-3 md:p-5 overflow-y-auto overflow-x-hidden md:overflow-hidden">
             <div class={`flex-none flex flex-col md:flex-row w-full md:gap-3 ${settings.is_invalid() ? "h-full" : "md:h-[80%]"}`}>
                 <Kline bind:market bind:current_price bind:kline_up_down_status bind:kline_series></Kline>
@@ -153,7 +153,7 @@
                         <Separator></Separator>
                     {/if}
                     <div class="flex-none h-82">
-                        <OrderAction bind:order_book_hiddened {market} {current_price} {mark_price} {on_order} {refresh_opened_orders} {can_close_long_size} {can_close_short_size}></OrderAction>
+                        <OrderAction bind:order_book_hiddened {market} {current_price} {mark_price} {on_order} {refresh_position} {refresh_opened_orders} {can_close_long_size} {can_close_short_size}></OrderAction>
                     </div>
                 </div>
             </div>
