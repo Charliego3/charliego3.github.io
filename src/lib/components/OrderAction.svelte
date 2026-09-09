@@ -155,6 +155,7 @@
                     if (message.o.X === "FILLED" || message.o.X === "PARTIALLY_FILLED") {
                         refresh_position?.();
                     }
+                    refresh_balance();
                     break;
             }
         }
