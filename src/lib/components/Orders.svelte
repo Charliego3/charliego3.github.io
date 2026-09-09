@@ -22,7 +22,7 @@
         <Table.Row>
             <Table.Head>时间</Table.Head>
             <Table.Head>交易对</Table.Head>
-            <Table.Head class="hidden md:table-cell">方向</Table.Head>
+            <Table.Head>方向</Table.Head>
             <Table.Head>价格</Table.Head>
             <Table.Head>数量</Table.Head>
             <Table.Head class="hidden md:table-cell">类型</Table.Head>
@@ -42,7 +42,7 @@
                     </Tooltip.Root>
                 </Table.Cell>
                 <Table.Cell>{order.symbol}</Table.Cell>
-                <Table.Cell class={(order.is_long() ? "text-[#ef5350]" : "text-[#26a69a]") + " font-bold hidden md:table-cell"}>{get_order_title(order)}</Table.Cell>
+                <Table.Cell class={(order.is_long() ? "text-[#ef5350]" : "text-[#26a69a]") + " font-bold"}>{get_order_title(order)}</Table.Cell>
                 <Table.Cell>{order.price}</Table.Cell>
                 <Table.Cell>{order.origQty}</Table.Cell>
                 <Table.Cell class="text-stone-500 hidden md:table-cell">{order.type}</Table.Cell>
