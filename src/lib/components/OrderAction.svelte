@@ -3,6 +3,8 @@
         get_balance_v3,
         get_symbol_config,
         order,
+        type OrderSide,
+        type PositionSide,
     } from "$lib/binance.svelte";
     import * as ButtonGroup from "$lib/components/ui/button-group/index.js";
     import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
@@ -196,13 +198,14 @@
     }
 
     function order_long() {
-        order({
+        const params = {
             symbol: `${market?.symbol}`,
-            side: "BUY",
-            positionSide: "LONG",
+            side: "BUY" as OrderSide,
+            positionSide: "LONG" as PositionSide,
             price: market?.parse_quote_0(final_long_price),
             quantity: market?.parse_base_0(final_long_size),
-        }).then(data => {
+        };
+        order(params).then(data => {
             if (!data) return;
             if (!data.orderId) {
                 toast.error(`下单失败: ${JSON.stringify(data)}`);
@@ -210,17 +213,19 @@
             }
             on_order?.(data);
             if (reset_after_order.current) reset();
+            toast.success(`做多成功: ${params.price} - ${params.quantity}`);
         });
     }
 
     function order_short() {
-        order({
+        const params = {
             symbol: `${market?.symbol}`,
-            side: "SELL",
-            positionSide: "SHORT",
+            side: "SELL" as OrderSide,
+            positionSide: "SHORT" as PositionSide,
             price: market?.parse_quote_0(final_short_price),
             quantity: market?.parse_base_0(final_short_size),
-        }).then(data => {
+        };
+        order(params).then(data => {
             if (!data) return;
             if (!data.orderId) {
                 toast.error(`下单失败: ${JSON.stringify(data)}`);
@@ -228,17 +233,19 @@
             }
             on_order?.(data);
             if (reset_after_order.current) reset();
+            toast.success(`做空成功: ${params.price} - ${params.quantity}`);
         });
     }
 
     function order_close_long() {
-        order({
+        const params = {
             symbol: `${market?.symbol}`,
-            side: "SELL",
-            positionSide: "LONG",
+            side: "SELL" as OrderSide,
+            positionSide: "LONG" as PositionSide,
             price: market?.parse_quote_0(final_short_price),
             quantity: market?.parse_base_0(can_close_long_size),
-        }).then(data => {
+        };
+        order(params).then(data => {
             if (!data) return;
             if (!data.orderId) {
                 toast.error(`平多单失败: ${JSON.stringify(data)}`);
@@ -246,17 +253,19 @@
             }
             on_order?.(data);
             if (reset_after_order.current) reset();
+            toast.success(`平多成功: ${params.price} - ${params.quantity}`);
         });
     }
 
     function order_close_short() {
-        order({
+        const params = {
             symbol: `${market?.symbol}`,
-            side: "BUY",
-            positionSide: "SHORT",
+            side: "BUY" as OrderSide,
+            positionSide: "SHORT" as PositionSide,
             price: market?.parse_quote_0(final_long_price),
             quantity: market?.parse_base_0(can_close_short_size),
-        }).then(data => {
+        };
+        order(params).then(data => {
             if (!data) return;
             if (!data.orderId) {
                 toast.error(`平空单失败: ${JSON.stringify(data)}`);
@@ -264,6 +273,7 @@
             }
             on_order?.(data);
             if (reset_after_order.current) reset();
+            toast.success(`平空成功: ${params.price} - ${params.quantity}`);
         });
     }
 
