@@ -125,6 +125,8 @@
         short_price = undefined;
         long_size = undefined;
         short_size = undefined;
+        long_slider_rate = 20;
+        short_slider_rate = 20;
     }
 
     class BalancePositionHandler extends BalancePositionAbstractHandler {
@@ -315,7 +317,7 @@
             <OrderInput title="Price" unit={market?.quote} bind:value={long_price} placeholder={market?.parse_quote(long_price_placeholder)} />
             <OrderInput title="Size" unit={market?.base} bind:value={long_size} placeholder={market?.parse_base(long_size_placeholder)} />
             <div class="flex gap-2 px-1">
-                <Slider type="single" bind:value={long_slider_rate} max={100} step={1} />
+                <Slider disabled={fast_order_opened.current} type="single" bind:value={long_slider_rate} max={100} step={1} />
                 <span class="w-9 text-right text-xs text-mist-500">{long_slider_rate}%</span>
             </div>
             <Button disabled={fast_order_opened.current} onclick={() => order_long()} variant="default" class="bg-[#ef5350] hover:cursor-pointer hover:bg-[#ef5350]/80 text-white" size="sm">做多</Button>
@@ -352,7 +354,7 @@
             <OrderInput title="Price" unit={market?.quote} bind:value={short_price} placeholder={market?.parse_quote(short_price_placeholder)} />
             <OrderInput title="Size" unit={market?.base} bind:value={short_size} placeholder={market?.parse_base(short_size_placeholder)} />
             <div class="flex gap-2 px-1">
-                <Slider type="single" bind:value={short_slider_rate} max={100} step={1} />
+                <Slider disabled={fast_order_opened.current} type="single" bind:value={short_slider_rate} max={100} step={1} />
                 <span class="w-9 text-right text-xs text-mist-500">{short_slider_rate}%</span>
             </div>
             <Button disabled={fast_order_opened.current} onclick={() => order_short()} variant="default" class="bg-[#26a69a] hover:cursor-pointer hover:bg-[#26a69a]/80 text-white" size="sm">做空</Button>

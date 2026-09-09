@@ -140,7 +140,7 @@
 </script>
 
 <svelte:head>
-    <title>{current_price + " |"} {market?.symbol}</title>
+    <title>{market?.parse_quote(current_price) + " |"} {market?.symbol}</title>
 </svelte:head>
 <!-- <ForceField refraction={30} rippleIntensity={0.05} rippleSpeed={2} class="md:h-full md:w-full"> -->
     <Blaze smoke={0.1} class="h-full w-full">
@@ -159,7 +159,7 @@
             </div>
             {#if settings.api_key && settings.api_secret}
                 <div class="flex-1 border-t md:border md:rounded-lg w-full flex md:flex-row flex-col">
-                    <div class="flex-1 border-b md:border-b-0">
+                    <div class="flex-1 border-b min-h-20 md:border-b-0">
                         <Positions {market} {mark_price} {current_price} {positions}></Positions>
                     </div>
                     <!-- <Separator orientation="vertical"></Separator> -->
