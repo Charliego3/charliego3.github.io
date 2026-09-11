@@ -139,11 +139,7 @@
             switch (message.e) {
                 // {"e":"ACCOUNT_UPDATE","T":1788231624647,"E":1788231624647,"a":{"B":[{"a":"USDC","wb":"291","cw":"291","bc":"0"}],"P":[{"s":"ETHUSDC","pa":"-0.473","ep":"2463.26","cr":"-48571.11968048","up":"0.04257","mt":"cross","iw":"0","ps":"SHORT","ma":"USDC","bep":"2463.26"}],"m":"ORDER"}}
                 case "ACCOUNT_UPDATE":
-                    try {
-                        quote_balance = new Decimal(message.a.B[0].cw);
-                    } catch {
-                        refresh_balance();
-                    }
+                    refresh_balance();
                     if (message.a.m === "ORDER") { // notify type
                         refresh_position?.();
                         refresh_opened_orders?.();
