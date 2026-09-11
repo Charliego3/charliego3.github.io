@@ -145,6 +145,7 @@
                         refresh_balance();
                     }
                     if (message.a.m === "ORDER") { // notify type
+                        refresh_position?.();
                         refresh_opened_orders?.();
                     }
                     break;
@@ -152,10 +153,6 @@
                 case "TRADE_LITE":
                 // {"e":"ORDER_TRADE_UPDATE","T":1788231596123,"E":1788231596123,"o":{"s":"ETHUSDC","c":"xNzvN00fwGYcj0DLc9EThL","S":"SELL","o":"LIMIT","f":"GTX","q":"0.473","p":"2463.26","ap":"0","sp":"0","x":"NEW","X":"NEW","i":81873278124,"l":"0","z":"0","L":"0","n":"0","N":"USDC","T":1788231596123,"t":0,"b":"0","a":"1166.82229","m":false,"R":false,"wt":"CONTRACT_PRICE","ot":"LIMIT","ps":"SHORT","cp":false,"rp":"0","pP":false,"si":0,"ss":0,"V":"EXPIRE_MAKER","pm":"NONE","gtd":0,"er":"0"}}
                 case "ORDER_TRADE_UPDATE":
-                    if (message.o.X === "FILLED" || message.o.X === "PARTIALLY_FILLED") {
-                        refresh_position?.();
-                    }
-                    refresh_balance();
                     break;
             }
         }
