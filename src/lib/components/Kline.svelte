@@ -147,6 +147,7 @@
     let show_loading_kline = $state(false);
     let chart_container_width = $state<number>();
     let chart_container_height = $state<number>();
+    let chart_container_fixed = $state(false);
 
     class KlineHandler implements WebsocketHandler {
         supported(_: string, message: WebSocketMessage): boolean {
@@ -198,6 +199,11 @@
         let chart_handler: any | null = null;
         let resizeObserver: ResizeObserver;
         let on_range: () => number | undefined;
+        let container_width = chart_container?.getBoundingClientRect().width ?? 0;
+        if (container_width < 768) {
+            chart_container_fixed = true;
+            chart_container_height = window.screen.availHeight * 0.5;
+        }
         tick().then(() => {
             chart_api = chart_ref?.getChart?.() as IChartApi;
             kline_series = kline_ref?.getSeries?.() as ISeriesApi<'Candlestick'>;
@@ -229,7 +235,7 @@
                 if (chart_ref && chart_container) {
                     const { width, height } = chart_container.getBoundingClientRect();
                     chart_container_width = width;
-                    chart_container_height = height;
+                    if (!chart_container_fixed) chart_container_height = height;
                     chart_ref.getChart()?.applyOptions({ width, height });
                     requestAnimationFrame(update_width);
                 }
@@ -295,6 +301,7 @@
     });
 
     let market_stream = $state<WebSocketClient>();
+    const kline_handler = new KlineHandler();
 
     $effect(() => {
         let unsubscribe_kline_handler = () => {};
@@ -307,15 +314,17 @@
         let un_state_change_listener: () => void | undefined;
         untrack(() => {
             market_stream = websocketManager.market_stream();
-            if (market_stream) {
-                un_state_change_listener = market_stream.onStateChange((state) => {
-                    if (state.status === "open") {
-                        refresh_kline();
-                    }
-                });
-                unsubscribe_kline_handler = market_stream.subscribe(new KlineHandler());
-                market_stream.send(kline_params);
+            if (!market_stream) {
+                return;
             }
+
+            unsubscribe_kline_handler = market_stream.subscribe(kline_handler);
+            un_state_change_listener = market_stream.onStateChange((state) => {
+                if (state.status === "open") {
+                    refresh_kline();
+                    market_stream?.send(kline_params);
+                }
+            });
         });
 
         return () => {
@@ -396,7 +405,7 @@
         }
     }
 </script>
-<div class="kline flex-1 h-full w-full max-h-[80vh] md:max-h-full min-h-[60vh] md:min-h-auto border-b md:border-b-none md:border md:rounded-lg overflow-hidden relative">
+<div class="kline flex-1 h-full w-full max-h-[50vh] md:max-h-full md:min-h-auto border-b md:border-b-none md:border md:rounded-lg overflow-hidden relative">
     <div bind:this={chart_container} class="h-full w-full chart relative">
         {#if chart_container && kline_data}
             <Chart

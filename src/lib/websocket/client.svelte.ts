@@ -52,8 +52,6 @@ export class WebSocketClient {
         reconnectAttempts: 0,
     });
 
-    private messages: Set<WebSocketMessage> = new Set();
-
     private stateListeners = new Set<(state: WebSocketState) => void>();
 
     constructor(key: string, url: string, options: WebSocketOptions = {}) {
@@ -126,9 +124,6 @@ export class WebSocketClient {
             if (message.____ === "ping") {
                 this.ws?.send("ping");
                 return;
-            }
-            if (message?.method === "SUBSCRIBE") {
-                this.messages.add(message);
             }
             this.ws?.send(JSON.stringify(message));
         });
@@ -231,9 +226,6 @@ export class WebSocketClient {
             });
 
             this.startHeartbeat();
-            for (const msg of this.messages) {
-                this.send(msg);
-            }
         };
 
         ws.onmessage = (event) => {

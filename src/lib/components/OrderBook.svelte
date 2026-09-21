@@ -59,6 +59,7 @@
 
     let public_stream = $state<WebSocketClient>();
     let market_stram = $state<WebSocketClient>();
+    const depth_handler = new DepthHandler();
 
     $effect(() => {
         const depth_param: WebsocketParams = {
@@ -70,10 +71,16 @@
         let unsubscribe_depth = () => {};
         untrack(() => {
             public_stream = websocketManager.public_stream();
-            if (public_stream) {
-                unsubscribe_depth = public_stream.subscribe(new DepthHandler());
-                public_stream.send(depth_param);
+            if (!public_stream) {
+                return;
             }
+
+            unsubscribe_depth = public_stream.subscribe(depth_handler);
+            public_stream.onStateChange(state => {
+                if (state.status === 'open') {
+                    public_stream?.send(depth_param);
+                }
+            })
         });
 
         return () => {
@@ -81,6 +88,8 @@
             public_stream?.send_unsubscribe(depth_param);
         }
     });
+
+    const mark_price_handler = new MarkPriceHandler();
 
     $effect(() => {
         const mark_price_param: WebsocketParams = {
@@ -92,10 +101,16 @@
         let unsubscribe_mark_price = () => {};
         untrack(() => {
             market_stram = websocketManager.market_stream();
-            if (market_stram) {
-                unsubscribe_mark_price = market_stram.subscribe(new MarkPriceHandler());
-                market_stram.send(mark_price_param);
+            if (!market_stram) {
+                return;
             }
+
+            unsubscribe_mark_price = market_stram.subscribe(mark_price_handler);
+            market_stram.onStateChange(state => {
+                if (state.status === 'open') {
+                    market_stram?.send(mark_price_param);
+                }
+            })
         });
 
         return () => {
