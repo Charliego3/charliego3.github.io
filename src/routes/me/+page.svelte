@@ -26,7 +26,7 @@
     </div>
 {/snippet}
 
-<div class="h-full w-full flex items-center justify-center overflow-auto">
+<div class="h-full w-full flex items-center justify-center md:overflow-auto">
     <div class="h-full flex flex-col gap-10 px-5 py-8 max-w-4xl text-md leading-[1.7]">
         <div class="font-bold font-sans flex flex-col gap-3">
             <span class="text-5xl">Charlie</span>
@@ -234,7 +234,7 @@
                 "Prometheus / Grafana / ELK",
             ])}
         </div>
-        <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-5 pb-8">
             <hr/>
             <span class="text-4xl font-bold">技术特点</span>
             {@render list("", "", "", [
@@ -250,6 +250,5 @@
                 "具备 Golang 业务开发及区块链相关系统开发经验",
             ])}
         </div>
-        <div>&nbsp;</div>
     </div>
 </div>
