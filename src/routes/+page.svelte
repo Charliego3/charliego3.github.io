@@ -10,7 +10,6 @@
     import Orders from "$lib/components/Orders.svelte";
     import Positions from "$lib/components/Positions.svelte";
     import Blaze from "$lib/components/ui/Blaze.svelte";
-    import ForceField from "$lib/components/ui/ForceField.svelte";
     import { Separator } from "$lib/components/ui/separator/index.js";
     import { Market } from "$lib/exchanges.svelte";
     import { settings } from "$lib/settings.svelte";
@@ -23,6 +22,7 @@
         type ISeriesApi
     } from "lightweight-charts";
     import { onMount } from "svelte";
+    import { exchanges } from "$lib/exchanges.svelte";
 
     let market = $state<Market>();
     let current_price = $state<Decimal>(new Decimal("0"));
@@ -117,7 +117,8 @@
         refresh_opened_orders();
     });
 
-    $effect(() => {
+    $effect.pre(() => {
+        exchanges.load();
         settings.api_key;
         settings.api_secret;
         refresh_position();
